@@ -17,7 +17,7 @@
  */
 int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
 {
-	buf->data = (u8 *)__get_free_page(GFP_KERNEL);
+	buf->data = (u8 *)__get_free_pages(GFP_KERNEL, 1);
 	if (!buf->data)
 		return -ENOMEM;
 
@@ -80,7 +80,7 @@ EXPORT_SYMBOL_GPL(tpm_buf_reset_sized);
 
 void tpm_buf_destroy(struct tpm_buf *buf)
 {
-	free_page((unsigned long)buf->data);
+	free_pages((unsigned long)buf->data, 1);
 }
 EXPORT_SYMBOL_GPL(tpm_buf_destroy);
 
@@ -108,7 +108,7 @@ void tpm_buf_append(struct tpm_buf *buf, const u8 *new_data, u16 new_length)
 	if (buf->flags & TPM_BUF_OVERFLOW)
 		return;
 
-	if ((buf->length + new_length) > PAGE_SIZE) {
+	if ((buf->length + new_length) > 2 * PAGE_SIZE) {
 		WARN(1, "tpm_buf: write overflow\n");
 		buf->flags |= TPM_BUF_OVERFLOW;
 		return;
