@@ -15,8 +15,8 @@
 #define FTPM_OPTEE_TA_EMULATE_PPI     (1)
 
 /* max. buffer size supported by fTPM  */
-#define MAX_COMMAND_SIZE       4096
-#define MAX_RESPONSE_SIZE      4096
+#define MAX_COMMAND_SIZE       8192	// 4096
+#define MAX_RESPONSE_SIZE      8192	// 4096
 
 /**
  * struct ftpm_tee_private - fTPM's private data
